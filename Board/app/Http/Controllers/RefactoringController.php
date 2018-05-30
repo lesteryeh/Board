@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repository;
 use App;
 use Illuminate\Http\Request;
 
@@ -13,38 +14,15 @@ class RefactoringController extends Controller
         $this->middleware('auth');
     }
 
-    public function getIndex(App\messages $odb, App\User $oUser)
+    public function getIndex(App\messages $odb, Repository $oUserRepository)
     {
         $test      = $odb->all()->toarray();
-        $aUserData = $oUser->getAllUser();
+        $aUserData = $oUserRepository->getAllUser();
         // $aUserData = $oUser->getAllUser()->->toArray();
 
         // echo "<pre>";
         $test = $this->arrayidx($test, 'id');
         $aUserData = $this->arrayidx($aUserData, 'id');
-        // foreach ($aUserData as $key => $value) {
-        //     // print_r($key);
-        //     print_r($value);
-        //     # code...
-        // }
-        // print_r((array)$test);
-        // echo 123;
-        // exit();
-
-        // DELETE
-        // $odb->find(1)->delete();
-
-        // UPDATE
-        // $aa = $odb->find(1);
-        // $aa->name = 'wwww';
-        // $aa->save();
-
-        //
-        //
-        // INSERT
-        // $odb->user_id=3;
-        // $odb->name='text4';
-        // $odb->save();
 
         return view('refactory', array('info' => $test, 'UserData' => $aUserData));
     }
