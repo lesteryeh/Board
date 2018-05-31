@@ -94,9 +94,9 @@ class MessageController extends Controller
         $oTextInfo = $odb->where('id',$iWriteTextID)->first();
 
         // where('active', 1)->first();
-        $odb->user_id = $iWriteUserID;
-        $odb->MessageInfo = $sMessage;
-        $odb->save();
+        // $odb->user_id = $iWriteUserID;
+        $oTextInfo->MessageInfo = $sMessage;
+        $oTextInfo->save();
 
         $aMessageInfo = $odb->all();
         $aMessageInfo = $this->arrayidx($aMessageInfo, 'id');

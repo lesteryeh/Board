@@ -2,97 +2,88 @@
 
 namespace App\Http\Controllers;
 
-use App\Repository;
 use App;
+// use App\Repository\MessagesRepository;
+// use App\Repository\UserRepository;
+use App\Service\BoardService;
+use Auth;
 use Illuminate\Http\Request;
 
 class RefactoringController extends Controller
 {
 
-    public function __construct()
+    protected $oBoardService;
+
+    public function __construct(BoardService $oBoardService)
     {
+        $this->oBoardService = $oBoardService;
         $this->middleware('auth');
     }
 
-    public function getIndex(App\messages $odb, Repository $oUserRepository)
+    public function getIndex()
     {
-        $test      = $odb->all()->toarray();
-        $aUserData = $oUserRepository->getAllUser();
-        // $aUserData = $oUser->getAllUser()->->toArray();
+        $test      = $this->oBoardService->getMessage();
+        $aUserData = $this->oBoardService->getMessageUser();
 
-        // echo "<pre>";
-        $test = $this->arrayidx($test, 'id');
+        $test      = $this->arrayidx($test, 'id');
         $aUserData = $this->arrayidx($aUserData, 'id');
+
+
 
         return view('refactory', array('info' => $test, 'UserData' => $aUserData));
     }
 
-    public function add()
-    {
-        echo 123;
-        exit();
-        return view('add');
-    }
     //添加留言
-    public function addpost(App\messages $odb, App\User $oUser, Request $_aRequest)
+    public function addpost(Request $_aRequest)
     {
-        $aUserData    = $oUser->getAllUser();
-        $aUserData    = $this->arrayidx($aUserData, 'id');
-        $_aRequest = $_aRequest->toArray();
+        $aUserData = $this->oBoardService->getMessageUser();
+        $aUserData = $this->arrayidx($aUserData, 'id');
 
-        $iWriteUserID = $_aRequest['UserID'];
-        $sMessage = $_aRequest['Textinfo'];
+        $_aRequest    = $_aRequest->toArray();
+        $aUserinfo    = Auth::User()->toArray();
+        $iWriteUserID = $aUserinfo['id'];
+        $sMessage     = $_aRequest['Textinfo'];
 
-        $odb->user_id = $iWriteUserID;
-        $odb->MessageInfo = $sMessage;
-        $odb->save();
+        $bResult = $this->oBoardService->addMessage($iWriteUserID, $sMessage);
 
-        $aMessageInfo = $odb->all();
+        $aMessageInfo = $this->oBoardService->getMessage();
         $aMessageInfo = $this->arrayidx($aMessageInfo, 'id');
 
         return view('refactory', array('info' => $aMessageInfo, 'UserData' => $aUserData));
     }
 
     //修改留言
-    public function edit(App\messages $odb, App\User $oUser, Request $_aRequest)
+    public function edit(Request $_aRequest)
     {
-        $aUserData    = $oUser->getAllUser();
-        $aUserData    = $this->arrayidx($aUserData, 'id');
+        $aUserData = $this->oBoardService->getMessageUser();
+        $aUserData = $this->arrayidx($aUserData, 'id');
         $_aRequest = $_aRequest->toArray();
 
         $iWriteUserID = $_aRequest['editUserID'];
         $iWriteTextID = $_aRequest['edittextID'];
-        $sMessage = $_aRequest['editTextinfo'];
+        $sMessage     = $_aRequest['editTextinfo'];
 
+        $bResult = $this->oBoardService->editMessage($iWriteTextID, $sMessage);
 
-        $oTextInfo = $odb->where('id',$iWriteTextID)->first();
-
-        // where('active', 1)->first();
-        $odb->user_id = $iWriteUserID;
-        $odb->MessageInfo = $sMessage;
-        $odb->save();
-
-        $aMessageInfo = $odb->all();
+        $aMessageInfo = $this->oBoardService->getMessage();
         $aMessageInfo = $this->arrayidx($aMessageInfo, 'id');
 
         return view('refactory', array('info' => $aMessageInfo, 'UserData' => $aUserData));
     }
 
     //刪除留言
-    public function del(Request $_aRequest, App\messages $odb)
+    public function del(Request $_aRequest)
     {
-        $_aRequest = $_aRequest->toArray();
+        $_aRequest  = $_aRequest->toArray();
         $iDelTextID = $_aRequest['DeleteTextID'];
 
         // DELETE
-        $bRequest =  $odb->where('id',$iDelTextID)->delete();
+        $bRequest = $this->oBoardService->deleteMessage($iDelTextID);
 
         $aArray = array(
-            'msg' => 'test',
+            'msg'     => 'test',
             'request' => $bRequest,
         );
-
-
 
         return json_encode($aArray);
     }

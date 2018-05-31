@@ -1,7 +1,7 @@
 <?php
 namespace App\Repository;
 
-use App/User;
+use App\User;
 
 
 class UserRepository
@@ -15,7 +15,7 @@ class UserRepository
 
     public function getAllUser()
     {
-        return $this->select('id', 'name')->get()->toArray();
+        return $this->oUser->select('id', 'name')->get()->toArray();
 
     }
 }
