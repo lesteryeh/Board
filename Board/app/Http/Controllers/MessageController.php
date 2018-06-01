@@ -22,29 +22,7 @@ class MessageController extends Controller
         // echo "<pre>";
         $test = $this->arrayidx($test, 'id');
         $aUserData = $this->arrayidx($aUserData, 'id');
-        // foreach ($aUserData as $key => $value) {
-        //     // print_r($key);
-        //     print_r($value);
-        //     # code...
-        // }
-        // print_r((array)$test);
-        // echo 123;
-        // exit();
 
-        // DELETE
-        // $odb->find(1)->delete();
-
-        // UPDATE
-        // $aa = $odb->find(1);
-        // $aa->name = 'wwww';
-        // $aa->save();
-
-        //
-        //
-        // INSERT
-        // $odb->user_id=3;
-        // $odb->name='text4';
-        // $odb->save();
 
         return view('demo', array('info' => $test, 'UserData' => $aUserData));
     }
@@ -61,10 +39,6 @@ class MessageController extends Controller
         $aUserData    = $oUser->getAllUser();
         $aUserData    = $this->arrayidx($aUserData, 'id');
         $_aRequest = $_aRequest->toArray();
-
-        echo "<pre>";
-        print_r($_aRequest);
-        exit();
 
         $iWriteUserID = $_aRequest['UserID'];
         $sMessage = $_aRequest['Textinfo'];
