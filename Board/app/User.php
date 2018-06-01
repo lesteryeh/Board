@@ -30,6 +30,11 @@ class User extends Authenticatable
     public function getAllUser()
     {
         return $this->select('id', 'name')->get()->toArray();
-
     }
+
+    public function checkAdmin()
+    {
+        return $this->Admin;
+    }
+
 }

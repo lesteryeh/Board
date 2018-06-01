@@ -49,6 +49,8 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+
+
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
@@ -62,7 +64,11 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
+                                    <a class="dropdown-item" href="{{ route('message') }}">一般留言板</a>
+                                    <a class="dropdown-item" href="{{ route('adminmessage') }}">管理留言板</a>
                                 </div>
+
+
                             </li>
                         @endguest
                     </ul>

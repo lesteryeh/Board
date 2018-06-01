@@ -18,4 +18,9 @@ class UserRepository
         return $this->oUser->select('id', 'name')->get()->toArray();
 
     }
+
+    public function checkAdmin()
+    {
+        return $this->oUser->Admin;
+    }
 }

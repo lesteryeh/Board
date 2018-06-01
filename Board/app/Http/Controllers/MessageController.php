@@ -18,6 +18,9 @@ class MessageController extends Controller
         $test      = $odb->all()->toarray();
         $aUserData = $oUser->getAllUser();
         // $aUserData = $oUser->getAllUser()->->toArray();
+        // 等等拿午餐時湯要注意一下喔，招牌拉麵的湯在最裡面，
+        // 其餘口味的湯在外面袋子上有寫口味別拿錯了
+        //
 
         // echo "<pre>";
         $test = $this->arrayidx($test, 'id');

@@ -7,7 +7,7 @@ use Auth;
 use App\Service\BoardService;
 use Illuminate\Http\Request;
 
-class RefactoringController extends Controller
+class AdminMessageController extends Controller
 {
 
     protected $oBoardService;
@@ -15,8 +15,6 @@ class RefactoringController extends Controller
     public function __construct(BoardService $oBoardService)
     {
         $this->oBoardService = $oBoardService;
-        $this->middleware('auth');
-        // $this->middleware('Admin');
     }
 
     public function getIndex()
@@ -27,7 +25,7 @@ class RefactoringController extends Controller
         $test      = $this->arrayidx($test, 'id');
         $aUserData = $this->arrayidx($aUserData, 'id');
 
-        return view('refactory', array('info' => $test, 'UserData' => $aUserData));
+        return view('admin', array('info' => $test, 'UserData' => $aUserData));
     }
 
     //添加留言
@@ -46,7 +44,7 @@ class RefactoringController extends Controller
         $aMessageInfo = $this->oBoardService->getMessage();
         $aMessageInfo = $this->arrayidx($aMessageInfo, 'id');
 
-        return view('refactory', array('info' => $aMessageInfo, 'UserData' => $aUserData));
+        return view('admin', array('info' => $aMessageInfo, 'UserData' => $aUserData));
     }
 
     //修改留言
@@ -65,7 +63,7 @@ class RefactoringController extends Controller
         $aMessageInfo = $this->oBoardService->getMessage();
         $aMessageInfo = $this->arrayidx($aMessageInfo, 'id');
 
-        return view('refactory', array('info' => $aMessageInfo, 'UserData' => $aUserData));
+        return view('admin', array('info' => $aMessageInfo, 'UserData' => $aUserData));
     }
 
     //刪除留言
